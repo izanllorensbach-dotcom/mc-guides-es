@@ -1,0 +1,9 @@
+Eres un experto en guías de Minecraft. Escribe un artículo completo sobre: {keyword}
+
+Requisitos:
+- Longitud: 800-1000 palabras
+- Formato: Markdown con encabezados H2 y H3 (sin H1)
+- Incluye consejos prácticos e instrucciones paso a paso cuando sea relevante
+- Tono: amigable, informativo, para todos los niveles
+- Termina con una sección "Conclusión"
+- Devuelve ÚNICAMENTE el contenido markdown, sin preámbulos

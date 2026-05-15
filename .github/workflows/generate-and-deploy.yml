@@ -1,0 +1,53 @@
+name: Generate Content & Deploy
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  generate-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install anthropic python-dotenv unidecode requests
+
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: Run keyword research
+        run: python scripts/keyword_research.py es keywords_es.csv
+
+      - name: Generate articles
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/generate_content.py keywords_es.csv content/posts/ es 10
+
+      - name: Commit new articles
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git add content/posts/
+          git diff --staged --quiet || git commit -m "chore: artículos diarios $(date +'%Y-%m-%d')"
+          git push
+
+      - name: Build Hugo
+        run: hugo --minify
+
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public

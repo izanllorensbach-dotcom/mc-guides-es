@@ -1,0 +1,10 @@
+{{ define "main" }}
+<article>
+  <h1>{{ .Title }}</h1>
+  <p class="meta">{{ .Date.Format "January 2, 2006" }}</p>
+  <div class="content">
+    {{ .Content }}
+  </div>
+  {{ partial "adsense.html" (dict "Site" .Site "slot" "adsense_mid") }}
+</article>
+{{ end }}

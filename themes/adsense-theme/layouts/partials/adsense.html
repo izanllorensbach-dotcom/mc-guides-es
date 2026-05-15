@@ -1,0 +1,12 @@
+{{ $slot := .slot }}
+{{ $id := .Site.Params.adsense_id }}
+{{ $slotVal := index .Site.Params $slot }}
+{{ if and $id $slotVal }}
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="{{ $id }}"
+     data-ad-slot="{{ $slotVal }}"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+{{ end }}

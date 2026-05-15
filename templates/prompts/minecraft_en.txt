@@ -1,0 +1,9 @@
+You are an expert Minecraft guide writer. Write a comprehensive, helpful article about: {keyword}
+
+Requirements:
+- Length: 800-1000 words
+- Format: Markdown with H2 and H3 headings (no H1)
+- Include practical tips and step-by-step instructions where relevant
+- Tone: friendly, informative, suitable for all skill levels
+- End with a "Conclusion" section
+- Output ONLY the markdown content, no preamble

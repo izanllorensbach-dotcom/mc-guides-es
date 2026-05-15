@@ -1,0 +1,9 @@
+{{ define "main" }}
+<h1>{{ .Site.Params.description }}</h1>
+<ul class="post-list">
+  {{ range first 20 .Site.RegularPages.ByDate.Reverse }}
+  <li><a href="{{ .Permalink }}">{{ .Title }}</a><span class="date">{{ .Date.Format "Jan 2, 2006" }}</span></li>
+  {{ end }}
+</ul>
+<p><a href="/posts/">View all guides &rarr;</a></p>
+{{ end }}

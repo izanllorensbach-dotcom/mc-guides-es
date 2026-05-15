@@ -1,0 +1,21 @@
+baseURL       = "https://izanl.github.io/mc-guides-es/"
+title         = "Guías de Minecraft"
+locale        = "es"
+theme         = "adsense-theme"
+paginate      = 20
+
+[params]
+  description      = "Guías completas de Minecraft: recetas, trucos y consejos para todos los jugadores."
+  adsense_id       = ""
+  adsense_header   = ""
+  adsense_mid      = ""
+
+[taxonomies]
+  tag = "tags"
+
+[outputs]
+  home    = ["HTML", "RSS"]
+  section = ["HTML"]
+
+[markup.goldmark.renderer]
+  unsafe = true
