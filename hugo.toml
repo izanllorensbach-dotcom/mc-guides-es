@@ -2,13 +2,42 @@ baseURL       = "https://izanllorensbach-dotcom.github.io/mc-guides-es/"
 title         = "Guías de Minecraft"
 locale        = "es"
 theme         = "adsense-theme"
-paginate      = 20
+paginate      = 24
 
 [params]
-  description      = "Guías completas de Minecraft: recetas, trucos y consejos para todos los jugadores."
+  description      = "Guías completas de Minecraft: encantamientos, biomas, mobs, crafteo y mucho más."
   adsense_id       = "ca-pub-7584552631821948"
   adsense_header   = ""
   adsense_mid      = ""
+
+  nav_logo       = "MC GUÍAS"
+  nav_all        = "Todas las Guías"
+  nav_enchant    = "✨ Encantamientos"
+  nav_biome      = "🌿 Biomas"
+  nav_mob        = "⚔️ Mobs"
+  nav_craft      = "🔨 Crafteo"
+
+  hero_eyebrow   = "El Recurso Definitivo"
+  hero_title     = "Domina Minecraft"
+  hero_subtitle  = "Guías detalladas sobre crafteo, encantamientos, biomas y mucho más."
+
+  stat_guides    = "Guías"
+  stat_updated   = "Actualización"
+  stat_updated_val = "Diaria"
+  stat_free      = "Gratis"
+  stat_free_val  = "100%"
+
+  section_latest = "Últimas Guías"
+  view_all       = "Ver todas las guías"
+
+  badge_guide    = "Guía"
+  badge_enchant  = "Encantamiento"
+  badge_biome    = "Bioma"
+  badge_mob      = "Mob"
+  badge_craft    = "Crafteo"
+
+  toc_title      = "Contenido"
+  read_min       = "min lectura"
 
 [taxonomies]
   tag = "tags"
@@ -19,3 +48,7 @@ paginate      = 20
 
 [markup.goldmark.renderer]
   unsafe = true
+
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel   = 3

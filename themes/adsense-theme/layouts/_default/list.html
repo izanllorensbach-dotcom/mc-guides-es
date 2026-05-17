@@ -1,9 +1,60 @@
 {{ define "main" }}
-<h1>{{ .Title }}</h1>
-<ul class="post-list">
-  {{ range .Paginator.Pages }}
-  <li><a href="{{ .Permalink }}">{{ .Title }}</a><span class="date">{{ .Date.Format "Jan 2, 2006" }}</span></li>
+
+<div class="container">
+
+  <div class="list-header">
+    <h1 class="list-title">{{ .Title }}</h1>
+  </div>
+
+  <div class="card-grid">
+    {{ range .Paginator.Pages }}
+      {{ $title := .Title | lower }}
+      {{ $cat := "default" }}
+      {{ $label := $.Site.Params.badge_guide | default "Guide" }}
+      {{ if or (strings.Contains $title "enchantment") (strings.Contains $title "enchant") }}
+        {{ $cat = "enchant" }}
+        {{ $label = $.Site.Params.badge_enchant | default "Enchantment" }}
+      {{ else if strings.Contains $title "biome" }}
+        {{ $cat = "biome" }}
+        {{ $label = $.Site.Params.badge_biome | default "Biome" }}
+      {{ else if or (strings.Contains $title "defeat") (strings.Contains $title "drops") (strings.Contains $title "mob") (strings.Contains $title "creeper") (strings.Contains $title "zombie") (strings.Contains $title "skeleton") (strings.Contains $title "spider") (strings.Contains $title "enderman") (strings.Contains $title "witch") (strings.Contains $title "blaze") (strings.Contains $title "ghast") (strings.Contains $title "slime") (strings.Contains $title "pillager") (strings.Contains $title "vindicator") (strings.Contains $title "phantom") (strings.Contains $title "drowned") (strings.Contains $title "husk") (strings.Contains $title "stray") }}
+        {{ $cat = "mob" }}
+        {{ $label = $.Site.Params.badge_mob | default "Mob" }}
+      {{ else if or (strings.Contains $title "craft") (strings.Contains $title "recipe") (strings.Contains $title "make ") (strings.Contains $title "how to get") (strings.Contains $title "how to make") }}
+        {{ $cat = "craft" }}
+        {{ $label = $.Site.Params.badge_craft | default "Crafting" }}
+      {{ end }}
+      <a href="{{ .Permalink }}" class="card {{ $cat }}">
+        <span class="badge {{ $cat }}">{{ $label }}</span>
+        <div class="card-title">{{ .Title }}</div>
+        {{ with .Description }}<div class="card-desc">{{ . }}</div>{{ end }}
+        <div class="card-footer">
+          <span class="card-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+    {{ end }}
+  </div>
+
+  {{ $paginator := .Paginator }}
+  {{ if gt $paginator.TotalPages 1 }}
+  <nav class="pagination">
+    {{ if $paginator.HasPrev }}
+      <a href="{{ $paginator.Prev.URL }}">← Prev</a>
+    {{ end }}
+    {{ range $paginator.Pagers }}
+      {{ if eq . $paginator }}
+        <span class="active"><span>{{ .PageNumber }}</span></span>
+      {{ else }}
+        <a href="{{ .URL }}">{{ .PageNumber }}</a>
+      {{ end }}
+    {{ end }}
+    {{ if $paginator.HasNext }}
+      <a href="{{ $paginator.Next.URL }}">Next →</a>
+    {{ end }}
+  </nav>
   {{ end }}
-</ul>
-{{ template "_internal/pagination.html" . }}
+
+</div>
+
 {{ end }}

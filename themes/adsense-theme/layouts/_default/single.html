@@ -1,10 +1,86 @@
 {{ define "main" }}
-<article>
-  <h1>{{ .Title }}</h1>
-  <p class="meta">{{ .Date.Format "January 2, 2006" }}</p>
-  <div class="content">
-    {{ .Content }}
+
+{{ $title := .Title | lower }}
+{{ $cat := "default" }}
+{{ $label := $.Site.Params.badge_guide | default "Guide" }}
+{{ if or (strings.Contains $title "enchantment") (strings.Contains $title "enchant") }}
+  {{ $cat = "enchant" }}
+  {{ $label = $.Site.Params.badge_enchant | default "Enchantment" }}
+{{ else if strings.Contains $title "biome" }}
+  {{ $cat = "biome" }}
+  {{ $label = $.Site.Params.badge_biome | default "Biome" }}
+{{ else if or (strings.Contains $title "defeat") (strings.Contains $title "drops") (strings.Contains $title "mob") (strings.Contains $title "creeper") (strings.Contains $title "zombie") (strings.Contains $title "skeleton") (strings.Contains $title "spider") (strings.Contains $title "enderman") (strings.Contains $title "witch") (strings.Contains $title "blaze") (strings.Contains $title "ghast") (strings.Contains $title "slime") (strings.Contains $title "pillager") (strings.Contains $title "vindicator") (strings.Contains $title "phantom") (strings.Contains $title "drowned") (strings.Contains $title "husk") (strings.Contains $title "stray") }}
+  {{ $cat = "mob" }}
+  {{ $label = $.Site.Params.badge_mob | default "Mob" }}
+{{ else if or (strings.Contains $title "craft") (strings.Contains $title "recipe") (strings.Contains $title "make ") (strings.Contains $title "how to get") (strings.Contains $title "how to make") }}
+  {{ $cat = "craft" }}
+  {{ $label = $.Site.Params.badge_craft | default "Crafting" }}
+{{ end }}
+
+<div class="container">
+  <div class="article-layout">
+
+    <article class="article-main">
+
+      <a href="{{ .Site.BaseURL }}" class="article-back">← {{ .Site.Params.nav_all | default "All Guides" }}</a>
+
+      <header class="article-header">
+        <span class="badge {{ $cat }}">{{ $label }}</span>
+        <h1 class="article-title">{{ .Title }}</h1>
+        <div class="article-meta">
+          <span>{{ .Date.Format "January 2, 2006" }}</span>
+          {{ if .ReadingTime }}<span>{{ .ReadingTime }} {{ $.Site.Params.read_min | default "min read" }}</span>{{ end }}
+        </div>
+      </header>
+
+      <div class="ad-slot">
+        {{ partial "adsense.html" (dict "Site" .Site "slot" "adsense_header") }}
+      </div>
+
+      <div class="article-content">
+        {{ .Content }}
+      </div>
+
+      <div class="ad-slot">
+        {{ partial "adsense.html" (dict "Site" .Site "slot" "adsense_mid") }}
+      </div>
+
+    </article>
+
+    {{ if .TableOfContents }}
+    <aside class="toc-sidebar">
+      <div class="toc-box">
+        <div class="toc-title">{{ .Site.Params.toc_title | default "Contents" }}</div>
+        <nav>{{ .TableOfContents }}</nav>
+      </div>
+    </aside>
+    {{ end }}
+
   </div>
-  {{ partial "adsense.html" (dict "Site" .Site "slot" "adsense_mid") }}
-</article>
+</div>
+
+<script>
+(function() {
+  var links = document.querySelectorAll('.toc-box nav a');
+  if (!links.length) return;
+  var headings = [];
+  links.forEach(function(a) {
+    var id = a.getAttribute('href').replace('#','');
+    var el = document.getElementById(id);
+    if (el) headings.push({ el: el, a: a });
+  });
+  function onScroll() {
+    var scrollY = window.scrollY + 100;
+    var active = headings[0];
+    headings.forEach(function(h) {
+      if (h.el.offsetTop <= scrollY) active = h;
+    });
+    links.forEach(function(a) { a.classList.remove('toc-active'); });
+    if (active) active.a.classList.add('toc-active');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+
 {{ end }}

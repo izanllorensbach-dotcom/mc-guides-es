@@ -1,18 +1,35 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.Language.Locale }}">
+<html lang="{{ .Site.Language.Locale | default "en" }}">
 <head>{{ partial "head.html" . }}{{ partial "schema.html" . }}</head>
 <body>
-<header class="site-header">
+
+<nav class="site-nav">
   <div class="container">
-    <a href="{{ .Site.BaseURL }}" class="site-title">{{ .Site.Title }}</a>
+    <a href="{{ .Site.BaseURL }}" class="site-logo">⛏ {{ .Site.Params.nav_logo | default .Site.Title }}</a>
+    <div class="nav-links">
+      <a href="{{ .Site.BaseURL }}" class="nav-link">{{ .Site.Params.nav_all | default "All Guides" }}</a>
+      <a href="{{ "tags/enchantment/" | relURL }}" class="nav-link enchant">{{ .Site.Params.nav_enchant | default "Enchantments" }}</a>
+      <a href="{{ "tags/biome/" | relURL }}" class="nav-link biome">{{ .Site.Params.nav_biome | default "Biomes" }}</a>
+      <a href="{{ "tags/mob/" | relURL }}" class="nav-link mob">{{ .Site.Params.nav_mob | default "Mobs" }}</a>
+      <a href="{{ "tags/crafting/" | relURL }}" class="nav-link craft">{{ .Site.Params.nav_craft | default "Crafting" }}</a>
+    </div>
   </div>
-  {{ partial "adsense.html" (dict "Site" .Site "slot" "adsense_header") }}
-</header>
-<main class="container">{{ block "main" . }}{{ end }}</main>
+</nav>
+
+<main>{{ block "main" . }}{{ end }}</main>
+
 <footer class="site-footer">
   <div class="container">
-    <p>&copy; {{ now.Format "2006" }} {{ .Site.Title }} &middot; <a href="/privacy/">Privacy Policy</a></p>
+    <div class="footer-inner">
+      <span class="footer-brand">⛏ {{ .Site.Params.nav_logo | default .Site.Title }}</span>
+      <div class="footer-links">
+        <a href="{{ .Site.BaseURL }}">{{ .Site.Params.nav_all | default "All Guides" }}</a>
+        <a href="{{ "privacy/" | relURL }}">Privacy Policy</a>
+      </div>
+      <span class="footer-copy">&copy; {{ now.Format "2006" }} {{ .Site.Title }}</span>
+    </div>
   </div>
 </footer>
+
 </body>
 </html>

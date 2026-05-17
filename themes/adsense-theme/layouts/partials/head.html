@@ -3,6 +3,9 @@
 <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
 <link rel="canonical" href="{{ .Permalink }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Kanit:wght@600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
 {{ if .Site.Params.adsense_id }}
 <meta name="google-adsense-account" content="{{ .Site.Params.adsense_id }}">

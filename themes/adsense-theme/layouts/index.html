@@ -1,9 +1,67 @@
 {{ define "main" }}
-<h1>{{ .Site.Params.description }}</h1>
-<ul class="post-list">
-  {{ range first 20 .Site.RegularPages.ByDate.Reverse }}
-  <li><a href="{{ .Permalink }}">{{ .Title }}</a><span class="date">{{ .Date.Format "Jan 2, 2006" }}</span></li>
+
+{{/* Hero */}}
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">{{ .Site.Params.hero_eyebrow | default "The Ultimate Resource" }}</div>
+    <h1 class="hero-title">{{ .Site.Params.hero_title | default "Master Minecraft" }}</h1>
+    <p class="hero-subtitle">{{ .Site.Params.hero_subtitle | default "In-depth guides for crafting, enchantments, biomes and more." }}</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">{{ len .Site.RegularPages }}+</span>
+        <span class="stat-label">{{ .Site.Params.stat_guides | default "Guides" }}</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">{{ .Site.Params.stat_updated_val | default "Daily" }}</span>
+        <span class="stat-label">{{ .Site.Params.stat_updated | default "Updated" }}</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">{{ .Site.Params.stat_free_val | default "100%" }}</span>
+        <span class="stat-label">{{ .Site.Params.stat_free | default "Free" }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{/* Card grid */}}
+<div class="container">
+  <div class="section-heading">{{ .Site.Params.section_latest | default "Latest Guides" }}</div>
+  <div class="card-grid">
+    {{ range first 30 .Site.RegularPages.ByDate.Reverse }}
+      {{ $title := .Title | lower }}
+      {{ $cat := "default" }}
+      {{ $label := $.Site.Params.badge_guide | default "Guide" }}
+      {{ if or (strings.Contains $title "enchantment") (strings.Contains $title "enchant") }}
+        {{ $cat = "enchant" }}
+        {{ $label = $.Site.Params.badge_enchant | default "Enchantment" }}
+      {{ else if strings.Contains $title "biome" }}
+        {{ $cat = "biome" }}
+        {{ $label = $.Site.Params.badge_biome | default "Biome" }}
+      {{ else if or (strings.Contains $title "defeat") (strings.Contains $title "drops") (strings.Contains $title "mob") (strings.Contains $title "creeper") (strings.Contains $title "zombie") (strings.Contains $title "skeleton") (strings.Contains $title "spider") (strings.Contains $title "enderman") (strings.Contains $title "witch") (strings.Contains $title "blaze") (strings.Contains $title "ghast") (strings.Contains $title "slime") (strings.Contains $title "pillager") (strings.Contains $title "vindicator") (strings.Contains $title "phantom") (strings.Contains $title "drowned") (strings.Contains $title "husk") (strings.Contains $title "stray") }}
+        {{ $cat = "mob" }}
+        {{ $label = $.Site.Params.badge_mob | default "Mob" }}
+      {{ else if or (strings.Contains $title "craft") (strings.Contains $title "recipe") (strings.Contains $title "make ") (strings.Contains $title "how to get") (strings.Contains $title "how to make") }}
+        {{ $cat = "craft" }}
+        {{ $label = $.Site.Params.badge_craft | default "Crafting" }}
+      {{ end }}
+      <a href="{{ .Permalink }}" class="card {{ $cat }}">
+        <span class="badge {{ $cat }}">{{ $label }}</span>
+        <div class="card-title">{{ .Title }}</div>
+        {{ with .Description }}<div class="card-desc">{{ . }}</div>{{ end }}
+        <div class="card-footer">
+          <span class="card-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+    {{ end }}
+  </div>
+  {{ if gt (len .Site.RegularPages) 30 }}
+  <p style="text-align:center;margin-bottom:2rem;">
+    <a href="{{ "posts/" | relURL }}" style="color:var(--text-muted);font-size:.85rem;">
+      {{ .Site.Params.view_all | default "View all guides" }} →
+    </a>
+  </p>
   {{ end }}
-</ul>
-<p><a href="/posts/">View all guides &rarr;</a></p>
+</div>
+
 {{ end }}
