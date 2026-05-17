@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: '0 4 * * *'
   workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - 'themes/**'
+      - 'hugo.toml'
+      - 'content/**'
 
 jobs:
   generate-and-deploy:
