@@ -39,6 +39,8 @@ paginate      = 24
   toc_title      = "Contenido"
   read_min       = "min lectura"
 
+  gsc_verification = "6yKPUPDVj2WXZ4xZd3CdfxqxTM0MFHOSGr7Ws05e2mk"
+
 [taxonomies]
   tag = "tags"
 

@@ -7,6 +7,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=VT323&family=Kanit:wght@600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
+{{ if .Site.Params.gsc_verification }}
+<meta name="google-site-verification" content="{{ .Site.Params.gsc_verification }}">
+{{ end }}
 {{ if .Site.Params.adsense_id }}
 <meta name="google-adsense-account" content="{{ .Site.Params.adsense_id }}">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ .Site.Params.adsense_id }}" crossorigin="anonymous"></script>
