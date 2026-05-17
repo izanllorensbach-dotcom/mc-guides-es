@@ -29,12 +29,12 @@ jobs:
           extended: true
 
       - name: Run keyword research
-        run: python scripts/keyword_research.py es keywords_es.csv
+        run: python -m scripts.keyword_research es keywords_es.csv
 
       - name: Generate articles
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python scripts/generate_content.py keywords_es.csv content/posts/ es 10
+        run: python -m scripts.generate_content keywords_es.csv content/posts/ es 10
 
       - name: Commit new articles
         run: |
