@@ -48,6 +48,7 @@ jobs:
           git config user.name "GitHub Actions"
           git add content/posts/
           git diff --staged --quiet || git commit -m "chore: artículos diarios $(date +'%Y-%m-%d')"
+          git pull --rebase origin master
           git push
 
       - name: Build Hugo
