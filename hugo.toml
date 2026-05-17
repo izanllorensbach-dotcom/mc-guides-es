@@ -6,7 +6,7 @@ paginate      = 20
 
 [params]
   description      = "Guías completas de Minecraft: recetas, trucos y consejos para todos los jugadores."
-  adsense_id       = ""
+  adsense_id       = "ca-pub-7584552631821948"
   adsense_header   = ""
   adsense_mid      = ""
 
