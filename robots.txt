@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://izanl.github.io/mc-guides-es/sitemap.xml
