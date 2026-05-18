@@ -1,5 +1,5 @@
 # scripts/generate_content.py
-import csv, sys
+import csv, sys, time
 from datetime import date
 from pathlib import Path
 import anthropic
@@ -21,17 +21,31 @@ def build_frontmatter(title: str, slug: str, description: str, tags: list[str], 
 
 def generate_article(client: anthropic.Anthropic, keyword: str, lang: str) -> str:
     template = load_prompt_template(lang)
-    message = client.messages.create(
-        model=MODEL,
-        max_tokens=1500,
-        system=[{
-            "type": "text",
-            "text": "You are an expert Minecraft guide writer. Write detailed, accurate, helpful content.",
-            "cache_control": {"type": "ephemeral"},
-        }],
-        messages=[{"role": "user", "content": template.replace("{keyword}", keyword)}],
-    )
-    return message.content[0].text
+    for attempt in range(4):
+        try:
+            message = client.messages.create(
+                model=MODEL,
+                max_tokens=1500,
+                system=[{
+                    "type": "text",
+                    "text": "You are an expert Minecraft guide writer. Write detailed, accurate, helpful content.",
+                    "cache_control": {"type": "ephemeral"},
+                }],
+                messages=[{"role": "user", "content": template.replace("{keyword}", keyword)}],
+            )
+            return message.content[0].text
+        except anthropic.RateLimitError:
+            wait = 60 * (attempt + 1)
+            print(f"    Rate limit, waiting {wait}s...")
+            time.sleep(wait)
+        except anthropic.APIStatusError as e:
+            if e.status_code in (529, 503, 500):
+                wait = 30 * (attempt + 1)
+                print(f"    API overloaded ({e.status_code}), waiting {wait}s...")
+                time.sleep(wait)
+            else:
+                raise
+    raise RuntimeError(f"Failed to generate article for '{keyword}' after 4 attempts")
 
 def save_article(content: str, slug: str, output_dir: str) -> Path:
     path = Path(output_dir) / f"{slug}.md"
@@ -55,7 +69,11 @@ def run(keywords_csv: str, output_dir: str, lang: str, count: int = 10) -> int:
             if slug in existing:
                 continue
             print(f"  Generating: {keyword}")
-            body = generate_article(client, keyword, lang)
+            try:
+                body = generate_article(client, keyword, lang)
+            except Exception as e:
+                print(f"    Skipping '{keyword}': {e}")
+                continue
             tags = ["minecraft", "guide"] + [w for w in keyword.split() if len(w) > 4][:3]
             description = f"Complete guide about {keyword}." if lang == "en" else f"Guía completa sobre {keyword}."
             frontmatter = build_frontmatter(keyword.title(), slug, description, tags, str(date.today()))
